@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy — Spendly{% endblock %}
+
+{% block head %}
+<style>
+    .terms-page {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 3rem 1.5rem 5rem;
+    }
+    .terms-page h1 {
+        font-family: 'DM Serif Display', serif;
+        font-size: 2.25rem;
+        margin-bottom: 0.5rem;
+    }
+    .terms-page .terms-meta {
+        color: var(--text-muted, #888);
+        font-size: 0.875rem;
+        margin-bottom: 2.5rem;
+    }
+    .terms-page h2 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-top: 2rem;
+        margin-bottom: 0.5rem;
+    }
+    .terms-page p {
+        line-height: 1.7;
+        color: var(--text-secondary, #444);
+        margin-bottom: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="terms-page">
+    <h1>Privacy Policy</h1>
+    <p class="terms-meta">Last updated: June 2026</p>
+
+    <h2>1. Data We Collect</h2>
+    <p>
+        When you create an account, we collect your name and email address. When you use
+        Spendly, we store the expense records you enter — including amounts, categories,
+        dates, and any descriptions you provide.
+    </p>
+
+    <h2>2. How We Use Your Data</h2>
+    <p>
+        Your data is used solely to provide the Spendly service: displaying your expense
+        history, generating summaries, and allowing you to manage your records. We do not
+        use your data for advertising or sell it to third parties.
+    </p>
+
+    <h2>3. Data Storage</h2>
+    <p>
+        Your data is stored securely on our servers. We take reasonable technical measures
+        to protect it from unauthorised access. You may request a copy or deletion of your
+        data at any time by contacting us.
+    </p>
+
+    <h2>4. Third Party Services</h2>
+    <p>
+        Spendly uses Google Fonts to load typefaces. This causes your browser to make a
+        request to Google's servers, which may log your IP address per Google's own privacy
+        policy. We do not integrate with any payment processors or analytics services that
+        collect personal data.
+    </p>
+
+    <h2>5. Contact Us</h2>
+    <p>
+        If you have questions or concerns about this Privacy Policy, or wish to exercise
+        your data rights, please contact us via the details provided on the site.
+    </p>
+</div>
+{% endblock %}
