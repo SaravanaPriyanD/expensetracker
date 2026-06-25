@@ -1,6 +1,21 @@
-from flask import Flask, render_template
+import sqlite3
+
+from flask import Flask, abort, flash, redirect, render_template, request, session, url_for
+
+from database.db import create_user, init_db, seed_db
+from database.queries import (
+    get_category_breakdown,
+    get_recent_transactions,
+    get_summary_stats,
+    get_user_by_id,
+)
 
 app = Flask(__name__)
+app.secret_key = "dev-spendly-secret"
+
+with app.app_context():
+    init_db()
+    seed_db()
 
 
 # ------------------------------------------------------------------ #
@@ -12,9 +27,32 @@ def landing():
     return render_template("landing.html")
 
 
-@app.route("/register")
+@app.route("/register", methods=["GET", "POST"])
 def register():
-    return render_template("register.html")
+    if request.method == "GET":
+        return render_template("register.html")
+
+    name = request.form.get("name", "").strip()
+    email = request.form.get("email", "").strip()
+    password = request.form.get("password", "")
+    confirm = request.form.get("confirm_password", "")
+
+    if not all([name, email, password, confirm]):
+        flash("All fields are required.")
+        return render_template("register.html")
+
+    if password != confirm:
+        flash("Passwords do not match")
+        return render_template("register.html")
+
+    try:
+        create_user(name, email, password)
+    except sqlite3.IntegrityError:
+        flash("Email already registered")
+        return render_template("register.html")
+
+    flash("Account created. Please sign in.")
+    return redirect(url_for("login"))
 
 
 @app.route("/login")
@@ -43,7 +81,20 @@ def logout():
 
 @app.route("/profile")
 def profile():
-    return "Profile page — coming in Step 4"
+    user_id = session.get("user_id")
+    if not user_id:
+        return redirect(url_for("login"))
+    current_user  = get_user_by_id(user_id)
+    stats         = get_summary_stats(user_id)
+    transactions  = get_recent_transactions(user_id)
+    breakdown     = get_category_breakdown(user_id)
+    return render_template(
+        "profile.html",
+        current_user=current_user,
+        stats=stats,
+        transactions=transactions,
+        breakdown=breakdown,
+    )
 
 
 @app.route("/expenses/add")
